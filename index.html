@@ -290,7 +290,6 @@
     </div>
     <div class="vm-list" id="vcards"></div>
     <span class="scroll-hint" id="hint"></span>
-    <div class="pager" id="pager"></div>
 </div>
 
 <script>
@@ -323,7 +322,7 @@ var SENDERS = 1284;
 
 var CAT = { jackpot: 'JACKPOT', mkmd: 'MKING / MDOLL', splash: 'Splash Gift', pgpz: 'PAYGIFT / PRETTYZ' };
 var T = {
-  th: { tab: 'ของขวัญ ฉ่ำๆ', date: 'วันที่', cat: 'หมวด', gift: 'ของขวัญ', sub: 'ที่ได้รับในห้องไลฟ์เสียง', catTotal: 'รวมหมวด', dayTotal: 'รวมรายวัน',
+  th: { tab: 'ของขวัญ ฉ่ำๆ', date: 'วันที่', cat: 'หมวด', gift: 'ของขวัญ', sub: 'ที่ได้รับในห้องไลฟ์เสียง', catTotal: 'รวมยอด', dayTotal: 'รวมรายวัน',
         piece: 'ชิ้น', live: 'เวลาไลฟ์', show: 'แสดงรายละเอียด', hide: 'ซ่อนรายละเอียด', hr: 'ชั่วโมง', min: 'นาที', coupons: 'คูปอง', lates: 'ได้รับล่าสุด', upd: '**ข้อมูลอัปเดตทุก 1 ชั่วโมง', last: 'อัปเดตล่าสุด',
         summary: 'สรุป', senders: 'จำนวน ID ที่ส่งของขวัญ', total: 'คูปองรวม', hint: '← เลื่อนตารางซ้าย-ขวาเพื่อดูทั้งหมด →',
         prev: '‹ ก่อนหน้า', next: 'ถัดไป ›', page: 'หน้า', empty: 'ยังไม่มีข้อมูลของขวัญในห้องไลฟ์เสียงช่วงนี้' },
@@ -332,8 +331,8 @@ var T = {
         summary: 'Summary', senders: 'Number of gifts received', total: 'total prices', hint: '← scroll the table sideways →',
         prev: '‹ Prev', next: 'Next ›', page: 'Page', empty: 'No gift records found for this period.' }
 };
-var lang = 'th', empty = false, page = 1, PER_PAGE = 8;
-var openDays = {};  // เปิดวันไหนไว้ (true) จะโชว์แถวทั้งหมดของวันนั้น
+var lang = 'th', empty = false;
+var openDays = {};  // ค่าเริ่มต้น = เปิดทุกวัน  วันที่ผู้ใช้กดหุบจะเก็บเป็น false
 
 function f0(n) { return n.toLocaleString('en-US'); }
 function f2(n) { return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
@@ -362,13 +361,11 @@ function render() {
   document.getElementById('upd').innerHTML = t.upd + '<br>' + t.last + ': 2026-11-20 10:00';
   document.getElementById('hint').textContent = days.length ? t.hint : '';
 
-  var pages = Math.max(1, Math.ceil(days.length / PER_PAGE));
-  if (page > pages) page = pages;
-  var shown = days.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  var shown = days;   // แสดงทุกวันในหน้าเดียว ให้ผู้ใช้เลื่อนดูเอง (ไม่แบ่งหน้า)
   var h = '';
 
     shown.forEach(function (d) {
-    var isClosed = !openDays[d.date];
+    var isClosed = (openDays[d.date] === false);
     // ช่องวันที่ + ปุ่มเปิดปิดมุมซ้ายบน (ใช้ทั้งตอนเปิดและปิด)
     var dateCell = function (rows) {
       return '<td rowspan="' + rows + '" class="date-cell">'
@@ -422,7 +419,7 @@ function render() {
   var m = '<table class="vm-table"><colgroup><col style="width:52%"><col style="width:22%"><col style="width:26%"></colgroup>'
         + '<thead><tr><th>' + t.gift + '<small>' + t.sub + '</small></th><th>' + t.piece + '</th><th>' + t.coupons + '</th></tr></thead><tbody>';
   shown.forEach(function (d) {
-    var open = !!openDays[d.date];
+    var open = (openDays[d.date] !== false);
     m += '<tr class="vm-day' + (open ? ' is-open' : '') + '"><td colspan="3">'
        + '<button type="button" class="vm-head" data-date="' + d.date + '" aria-expanded="' + open + '">'
        + '<span class="vm-chev" aria-hidden="true">▸</span><span class="vm-date">' + d.date + '</span>'
@@ -452,20 +449,12 @@ function render() {
 
   document.querySelectorAll('.day-toggle, .vm-head').forEach(function (b) {
     b.onclick  = function () { var k = b.getAttribute('data-date');
-        openDays[k] = !openDays[k]; render();
+        openDays[k] = (openDays[k] === false); render();   // เปิดอยู่ -> หุบ, หุบอยู่ -> เปิด
     }
   })
-
-  var p = document.getElementById('pager');
-  p.innerHTML = pages > 1 ? '<button id="pv"' + (page === 1 ? ' disabled' : '') + '>' + t.prev + '</button><span>' + t.page + ' ' + page + ' / ' + pages
-    + '</span><button id="nx"' + (page === pages ? ' disabled' : '') + '>' + t.next + '</button>' : '';
-  if (pages > 1) {
-    document.getElementById('pv').onclick = function () { page--; render(); };
-    document.getElementById('nx').onclick = function () { page++; render(); };
-  }
 }
 
-function toggle(a, b, fn) { a.onclick = function () { a.classList.add('on'); b.classList.remove('on'); fn(); page = 1; render(); }; }
+function toggle(a, b, fn) { a.onclick = function () { a.classList.add('on'); b.classList.remove('on'); fn(); render(); }; }
 toggle(document.getElementById('b-th'), document.getElementById('b-en'), function () { lang = 'th'; });
 toggle(document.getElementById('b-en'), document.getElementById('b-th'), function () { lang = 'en'; });
 toggle(document.getElementById('b-full'), document.getElementById('b-empty'), function () { empty = false; });
