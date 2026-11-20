@@ -175,7 +175,6 @@
     .mock-bar button.on { background: #e82d53; color: #fff; border-color: #e82d53; }
     .gift-report-container { margin-top: 0; }
 
-    .gift-report-container table.voice-table { min-width: 560px; }      /* 6 คอลัมน์: มือถือเลื่อนซ้ายขวาได้แบบตารางเดิม */
     .gift-report-container th small { display: block; font-weight: normal; font-size: 9px; opacity: .9; margin-top: 2px; }
     .gift-report-container .live-time { margin-top: 6px; font-weight: normal; color: #555; line-height: 1.4; }
     .gift-report-container .live-time b { color: #c41f42; }
@@ -195,7 +194,6 @@
     .gift-report-container .cat-mkmd    { color: #8a4b00; background: #fff4d6; border-color: #f3d58a; }
     .gift-report-container .cat-splash  { color: #9c1a5c; background: #fdeef6; border-color: #f2b8d6; }
     .gift-report-container .cat-pgpz    { color: #555;    background: #f1f1f1; border-color: #cfcfcf; }
-    .gift-report-container .scroll-hint { display: block; text-align: center; font-size: 10px; color: #999; padding: 6px 0 0; }
     .gift-report-container .pager { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 10px; font-size: 12px; font-weight: bold; }
     .gift-report-container .pager button { padding: 5px 10px; border: 1px solid #e82d53; background: #fff; color: #e82d53; border-radius: 4px; font-weight: bold; cursor: pointer; }
     .gift-report-container .pager button:disabled { opacity: .35; cursor: default; }
@@ -204,60 +202,19 @@
         .gift-report-container table.voice-table { min-width: unset; }
         .gift-report-container th small { font-size: 11px; }
         .gift-report-container .cat-badge { font-size: 12px; padding: 4px 12px; }
-        .gift-report-container .scroll-hint { display: none; }
         .gift-report-container .pager { justify-content: flex-end; font-size: 13px; }
         .gift-report-container .voice-table .yellow-cell { width: auto; }
     }
 
     /* =========================================
-       มือถือ (< 768px): ตาราง 3 คอลัมน์ ของขวัญ | ชิ้น | คูปอง  พอดีจอ ไม่ต้องเลื่อน
+       มือถือ (< 768px): ตารางเหมือนแท็บของขวัญฉ่ำเดิม  ขนาดเต็ม เลื่อนซ้ายขวาใน .table-wrapper
        ========================================= */
-    .gift-report-container .vm-list { display: none; }
-    .gift-report-container table.vm-table { min-width: 0; table-layout: fixed; }
-    .gift-report-container .vm-table th { font-size: 12px; padding: 8px 6px; }
-    .gift-report-container .vm-table td { font-size: 12px; padding: 7px 6px; }
-    .gift-report-container .vm-table .c-num { text-align: right; white-space: nowrap; }
-
-    /* แถวหัววัน (กดเปิดปิดได้ทั้งแถว) */
-    .gift-report-container .vm-day td { padding: 0; background: #fff; }
-    .gift-report-container .vm-day.is-open td { background: #fdeef1; }
-    .gift-report-container .vm-head { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 6px 10px;
-        border: 0; background: transparent; font: inherit; color: #000; text-align: left; cursor: pointer; }
-    .gift-report-container .vm-chev { flex: none; width: 24px; height: 24px; border: 1px solid #e82d53; border-radius: 5px; color: #e82d53;
-        display: flex; align-items: center; justify-content: center; font-size: 13px; transition: transform .2s; background: #fff; }
-    .gift-report-container .vm-day.is-open .vm-chev { transform: rotate(90deg); background: #e82d53; color: #fff; }
-    .gift-report-container .vm-date { font-size: 13px; font-weight: bold; }
-    .gift-report-container .vm-live { margin-left: auto; font-size: 12px; font-weight: normal; color: #555; white-space: nowrap; }
-    .gift-report-container .vm-live b { color: #c41f42; }
-
-    /* แถวหมวด */
-    .gift-report-container .vm-cat td { background: #fff; padding: 6px 6px 2px; border-bottom: 0; }
-    .gift-report-container .vm-cat .cat-badge { font-size: 10px; }
-    .gift-report-container .vm-cattotal td { background: #fffde0; }
-    .gift-report-container .vm-cattotal td:first-child { text-align: left; color: #555; }
-
-    /* แถวของขวัญ */
-    .gift-report-container .vm-gift-cell { display: flex; align-items: center; gap: 6px; text-align: left; }
-    .gift-report-container .vm-gift-cell .gift-box { width: 28px; height: 28px; margin: 0; font-size: 18px; flex: none; }
-    .gift-report-container .vm-gift-cell span { min-width: 0; overflow-wrap: anywhere; }
-
-    /* รวมรายวัน + สรุป */
-    .gift-report-container .vm-daytotal td { background: #ffff99; }
-    .gift-report-container .vm-daytotal td:first-child { text-align: left; color: #a3123a; }
-    .gift-report-container .vm-extra td { background: #ffff99; font-weight: normal; text-align: left; color: #444; padding-top: 4px; }
-    .gift-report-container .vm-extra b { color: #000; margin-right: 12px; }
-    .gift-report-container .vm-table .summary-row td { font-size: 12px; }
-    .gift-report-container .vm-table .summary-row td:first-child { text-align: left; }
-    .gift-report-container .vm-sum-extra td { background: #e82d53; color: #fff; text-align: left; font-weight: normal; line-height: 1.6; border-top-color: #f37c94; }
-    .gift-report-container .vm-sum-extra b { margin-right: 10px; }
-
+    .gift-report-container table.voice-table { min-width: 560px; }
     @media (max-width: 767px) {
-        .gift-report-container .table-wrapper,
-        .gift-report-container .scroll-hint { display: none; }
-        .gift-report-container .vm-list { display: block; padding: 0 8px; }
-        .gift-report-container .update-warning { font-size: 11px; }
-        .gift-report-container .pager { padding: 8px 10px 14px; font-size: 13px; }
-        .gift-report-container .pager button { padding: 8px 14px; font-size: 13px; }
+        .gift-report-container .voice-table .cat-badge { white-space: normal; line-height: 1.3; padding: 2px 6px; }
+    }
+    @media (min-width: 768px) {
+        .gift-report-container table.voice-table { min-width: unset; }
     }
 </style>
 </head>
@@ -290,8 +247,6 @@
             <tbody id="vbody"></tbody>
         </table>
     </div>
-    <div class="vm-list" id="vcards"></div>
-    <span class="scroll-hint" id="hint"></span>
 </div>
 
 <script>
@@ -361,7 +316,6 @@ function render() {
   document.getElementById('h-cattotal').textContent = t.catTotal;
   document.getElementById('h-daytotal').textContent = t.dayTotal;
   document.getElementById('upd').innerHTML = t.upd + '<br>' + t.last + ': 2026-11-20 10:00';
-  document.getElementById('hint').textContent = days.length ? t.hint : '';
 
   var shown = days;   // แสดงทุกวันในหน้าเดียว ให้ผู้ใช้เลื่อนดูเอง (ไม่แบ่งหน้า)
   var h = '';
@@ -417,39 +371,8 @@ function render() {
   }
   document.getElementById('vbody').innerHTML = h;
 
-  // ----- มือถือ: ตาราง 3 คอลัมน์ (ใช้ openDays ตัวเดียวกับตารางจอคอม) -----
-  var m = '<table class="vm-table"><colgroup><col style="width:52%"><col style="width:22%"><col style="width:26%"></colgroup>'
-        + '<thead><tr><th>' + t.gift + '<small>' + t.sub + '</small></th><th>' + t.piece + '</th><th>' + t.coupons + '</th></tr></thead><tbody>';
-  shown.forEach(function (d) {
-    var open = (openDays[d.date] !== false);
-    m += '<tr class="vm-day' + (open ? ' is-open' : '') + '"><td colspan="3">'
-       + '<button type="button" class="vm-head" data-date="' + d.date + '" aria-expanded="' + open + '">'
-       + '<span class="vm-chev" aria-hidden="true">▸</span><span class="vm-date">' + d.date + '</span>'
-       + '<span class="vm-live">' + t.live + ' <b>' + liveTime(d.sec, t) + '</b></span></button></td></tr>';
-    if (!open) return;
-    d.cats.forEach(function (c) {
-      m += '<tr class="vm-cat"><td colspan="3" style="text-align:left"><span class="cat-badge cat-' + c.key + '">' + CAT[c.key] + '</span></td></tr>';
-      c.gifts.forEach(function (g) {
-        m += '<tr><td><div class="vm-gift-cell"><div class="gift-box">' + g.icon + '</div><span>' + g.name + '</span></div></td>'
-           + '<td class="c-num">' + f0(g.qty) + '</td><td class="c-num">' + f0(g.coupon) + '</td></tr>';
-      });
-      m += '<tr class="vm-cattotal"><td>' + t.catTotal + '</td><td class="c-num">' + f0(catQty(c)) + '</td><td class="c-num">' + f0(catCoupon(c)) + '</td></tr>';
-    });
-    m += '<tr class="vm-daytotal"><td>' + t.dayTotal + '</td><td class="c-num">' + f0(dayQty(d)) + '</td><td class="c-num">' + f0(dayCoupon(d)) + '</td></tr>'
-       + '<tr class="vm-extra"><td colspan="3">JR: <b>' + f2(d.jr) + '</b> Mtoken: <b>' + f2(d.mt) + '</b></td></tr>';
-  });
-  if (days.length) {
-    m += '<tr class="summary-row"><td>' + t.summary + '</td><td class="c-num">' + f0(tq) + '</td><td class="c-num">' + f0(tc) + '</td></tr>'
-       + '<tr class="vm-sum-extra"><td colspan="3">' + t.senders + ': <b>' + f0(SENDERS) + ' ID</b><br>'
-       + 'JR: <b>' + f2(sum(days, 'jr')) + '</b> Mtoken: <b>' + f2(sum(days, 'mt')) + '</b></td></tr>';
-  } else {
-    m += '<tr><td colspan="3" style="text-align: center; padding: 40px 10px; color: #777; font-size: 14px;">'
-       + '<div style="font-size: 35px; margin-bottom: 10px; opacity: 0.5;">🎁</div>' + t.empty + '</td></tr>';
-  }
-  m += '</tbody></table>';
-  document.getElementById('vcards').innerHTML = m;
 
-  document.querySelectorAll('.day-toggle, .vm-head').forEach(function (b) {
+  document.querySelectorAll('.day-toggle').forEach(function (b) {
     b.onclick  = function () { var k = b.getAttribute('data-date');
         openDays[k] = (openDays[k] === false); render();   // เปิดอยู่ -> หุบ, หุบอยู่ -> เปิด
     }
