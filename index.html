@@ -231,8 +231,10 @@
     .gift-report-container .vm-live b { color: #c41f42; }
 
     /* แถวหมวด */
-    .gift-report-container .vm-cat td { background: #fffde0; padding: 5px 6px; }
+    .gift-report-container .vm-cat td { background: #fff; padding: 6px 6px 2px; border-bottom: 0; }
     .gift-report-container .vm-cat .cat-badge { font-size: 10px; }
+    .gift-report-container .vm-cattotal td { background: #fffde0; }
+    .gift-report-container .vm-cattotal td:first-child { text-align: left; color: #555; }
 
     /* แถวของขวัญ */
     .gift-report-container .vm-gift-cell { display: flex; align-items: center; gap: 6px; text-align: left; }
@@ -322,7 +324,7 @@ var SENDERS = 1284;
 
 var CAT = { jackpot: 'JACKPOT', mkmd: 'MKING / MDOLL', splash: 'Splash Gift', pgpz: 'PAYGIFT / PRETTYZ' };
 var T = {
-  th: { tab: 'ของขวัญ ฉ่ำๆ', date: 'วันที่', cat: 'หมวด', gift: 'ของขวัญ', sub: 'ที่ได้รับในห้องไลฟ์เสียง', catTotal: 'รวมยอด', dayTotal: 'รวมรายวัน',
+  th: { tab: 'ของขวัญ ฉ่ำๆ', date: 'วันที่', cat: 'หมวด', gift: 'ของขวัญ', sub: 'ที่ได้รับในห้องไลฟ์เสียง', catTotal: 'ยอดรวม', dayTotal: 'รวมรายวัน',
         piece: 'ชิ้น', live: 'เวลาไลฟ์', show: 'แสดงรายละเอียด', hide: 'ซ่อนรายละเอียด', hr: 'ชั่วโมง', min: 'นาที', coupons: 'คูปอง', lates: 'ได้รับล่าสุด', upd: '**ข้อมูลอัปเดตทุก 1 ชั่วโมง', last: 'อัปเดตล่าสุด',
         summary: 'สรุป', senders: 'จำนวน ID ที่ส่งของขวัญ', total: 'คูปองรวม', hint: '← เลื่อนตารางซ้าย-ขวาเพื่อดูทั้งหมด →',
         prev: '‹ ก่อนหน้า', next: 'ถัดไป ›', page: 'หน้า', empty: 'ยังไม่มีข้อมูลของขวัญในห้องไลฟ์เสียงช่วงนี้' },
@@ -426,12 +428,12 @@ function render() {
        + '<span class="vm-live">' + t.live + ' <b>' + liveTime(d.sec, t) + '</b></span></button></td></tr>';
     if (!open) return;
     d.cats.forEach(function (c) {
-      m += '<tr class="vm-cat"><td style="text-align:left"><span class="cat-badge cat-' + c.key + '">' + CAT[c.key] + '</span></td>'
-         + '<td class="c-num">' + f0(catQty(c)) + '</td><td class="c-num">' + f0(catCoupon(c)) + '</td></tr>';
+      m += '<tr class="vm-cat"><td colspan="3" style="text-align:left"><span class="cat-badge cat-' + c.key + '">' + CAT[c.key] + '</span></td></tr>';
       c.gifts.forEach(function (g) {
         m += '<tr><td><div class="vm-gift-cell"><div class="gift-box">' + g.icon + '</div><span>' + g.name + '</span></div></td>'
            + '<td class="c-num">' + f0(g.qty) + '</td><td class="c-num">' + f0(g.coupon) + '</td></tr>';
       });
+      m += '<tr class="vm-cattotal"><td>' + t.catTotal + '</td><td class="c-num">' + f0(catQty(c)) + '</td><td class="c-num">' + f0(catCoupon(c)) + '</td></tr>';
     });
     m += '<tr class="vm-daytotal"><td>' + t.dayTotal + '</td><td class="c-num">' + f0(dayQty(d)) + '</td><td class="c-num">' + f0(dayCoupon(d)) + '</td></tr>'
        + '<tr class="vm-extra"><td colspan="3">JR: <b>' + f2(d.jr) + '</b> Mtoken: <b>' + f2(d.mt) + '</b></td></tr>';
