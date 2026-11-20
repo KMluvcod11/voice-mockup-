@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VOICE Mockup 1.0</title>
+<!-- mockup แท็บ VOICE: ใช้ CSS เดิมของแท็บของขวัญฉ่ำ (gift_report.php) ทั้งก้อน
+     + เพิ่มคอลัมน์ Category / Category Total ตามดราฟพี่เลี้ยง  ข้อมูลเป็นตัวอย่าง -->
+<style>
+    /* =========================================
+       Base Styles (Mobile First Approach)
+       ========================================= */
+    .gift-report-container {
+        font-family: Arial, sans-serif;
+        color: #000;
+        background-color: #fff; /* เอาพื้นหลังสีขาวกลับมา */
+        border: 1px solid #ccc; /* เพิ่มกรอบ */
+        border-radius: 8px; /* ขอบมุมโค้ง */
+        overflow: hidden; /* ป้องกันแถบเมนูด้านบนล้นมุมโค้งออกไป */
+        margin: 20px auto; /* จัดให้อยู่กึ่งกลาง */
+        width: 100%;
+        max-width: 1324px;
+        box-sizing: border-box; 
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* เพิ่มเงาบางๆ ให้กล่องดูมีมิติแยกจากพื้นหลัง */
+    }
+
+    /* Navigation Menu */
+    .gift-report-container .nav-container {
+        display: flex;
+        flex-wrap: wrap; 
+        background-color: #f2f2f2;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 20px;
+        /* padding-top: 5px; */
+        /* padding-left: 10px;  */
+    }
+    .gift-report-container .nav-item {
+        padding: 10px 5px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+        border-top: 2px solid transparent;
+        text-align: center;
+        flex: 1 1 20%; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .gift-report-container .nav-item.active {
+        background-color: #fff;
+        border-top: 2px solid #ddd;
+        border-left: 1px solid #e0e0e0;
+        border-right: 1px solid #e0e0e0;
+        border-bottom: 1px solid #fff;
+        margin-bottom: -1px;
+    }
+
+    /* Header Section */
+    .gift-report-container .header-title {
+        font-size: 13px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        line-height: 1.4;
+        text-align: left;
+        padding: 0 15px; /* เพิ่มระยะห่างจากกรอบซ้าย-ขวา */
+    }
+    .gift-report-container .update-warning {
+        text-align: center; 
+        color: #d10000;
+        font-weight: bold;
+        font-size: 10px;
+        margin-bottom: 10px;
+        padding: 0 15px; /* เพิ่มระยะห่างจากกรอบซ้าย-ขวา */
+    }
+
+    /* Table Wrapper */
+    .gift-report-container .table-wrapper {
+        width: 100%;
+        overflow-x: auto; 
+        background-color: #fff;
+        padding: 0px; 
+        box-sizing: border-box;
+    }
+
+    /* Table Styles */
+    .gift-report-container table {
+        width: 100%;
+        min-width: 450px; 
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+        table-layout: fixed;
+    }
+    .gift-report-container th, 
+    .gift-report-container td {
+        border: 1px solid #ccc;
+        text-align: center;
+        padding: 8px 4px; 
+        font-size: 10px; 
+        vertical-align: middle;
+        word-wrap: break-word; 
+    }
+    .gift-report-container th {
+        background-color: #e82d53;
+        color: #fff;
+        font-weight: bold;
+        display: table-cell; 
+    }
+    .gift-report-container td {
+        background-color: #fff;
+        font-weight: bold; 
+        display: table-cell; 
+        width: auto;
+    }
+    
+    .gift-report-container td:before {
+        display: none !important; 
+    }
+
+    /* Specific Cell Styles */
+    .gift-report-container .yellow-cell {
+        background-color: #ffff99;
+        text-align: left;
+        padding-left: 10px;
+        line-height: 1.5;
+    }
+    .gift-report-container .summary-row td {
+        background-color: #e82d53;
+        color: #fff;
+        padding: 10px 5px;
+    }
+    .gift-report-container .summary-details {
+        line-height: 1.5;
+    }
+    
+    /* Gift Icons */
+    .gift-report-container .gift-box {
+        /* border: 1px solid #ddd; */
+        width: 35px;
+        height: 35px;
+        margin: 0 auto 5px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        background-color: #fff;
+    }
+    .gift-report-container .text-icon {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    /* =========================================
+       Desktop Styles (Tablet & PC)
+       ========================================= */
+    @media (min-width: 768px) {
+        .gift-report-container .nav-container { flex-wrap: nowrap; /*padding-left: 15px;*/ }
+        .gift-report-container .nav-item { padding: 12px 20px; font-size: 14px; flex: none; }
+        .gift-report-container .header-title { font-size: 16px; margin-bottom: 20px; padding: 0 20px; }
+        .gift-report-container .update-warning { text-align: right; font-size: 12px; margin-bottom: 5px; padding: 0 20px; }
+        .gift-report-container .table-wrapper { padding: 0px 0px 0px 0px; }
+        .gift-report-container table { min-width: unset; }
+        .gift-report-container th, .gift-report-container td { padding: 15px 10px; font-size: 13px; }
+        .gift-report-container .yellow-cell { padding-left: 15px; line-height: 1.8; width: 35%; }
+        .gift-report-container .gift-box { width: 50px; height: 50px; font-size: 28px; }
+        .gift-report-container .text-icon { font-size: 20px; }
+    }
+</style>
+
+<style>
+    /* ---------- เพิ่มเฉพาะ VOICE (ต่อจากสไตล์เดิม) ---------- */
+    body { margin: 0; padding: 10px; background: #fcd000; }
+    .mock-bar { max-width: 1324px; margin: 0 auto 8px; font: 13px Arial, sans-serif; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .mock-bar button { font: inherit; padding: 4px 10px; border: 1px solid #999; background: #fff; border-radius: 4px; cursor: pointer; }
+    .mock-bar button.on { background: #e82d53; color: #fff; border-color: #e82d53; }
+    .gift-report-container { margin-top: 0; }
+
+    .gift-report-container table.voice-table { min-width: 560px; }      /* 6 คอลัมน์: มือถือเลื่อนซ้ายขวาได้แบบตารางเดิม */
+    .gift-report-container th small { display: block; font-weight: normal; font-size: 9px; opacity: .9; margin-top: 2px; }
+    .gift-report-container .live-time { margin-top: 6px; font-weight: normal; color: #555; line-height: 1.4; }
+    .gift-report-container .live-time b { color: #c41f42; }
+    .gift-report-container .cat-cell { background-color: #fff; }
+    .gift-report-container .date-cell { position: relative; vertical-align: top; background-color: #fff; padding-top: 26px; }
+    .gift-report-container .day-toggle { position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; padding: 0;
+                                        border: 1px solid #e82d53; border-radius: 4px; background: #fff; color: #e82d53; font-size: 13px; line-height: 18px; cursor: pointer; }
+    .gift-report-container .day-toggle:hover { background: #e82d53; color: #fff; }
+    .gift-report-container .day-closed td { text-align: left; padding: 6px 8px; background-color: #fff; }
+    .gift-report-container .day-closed .day-toggle { position: static; vertical-align: middle; margin-right: 8px; }
+    .gift-report-container .dc-date { vertical-align: middle; }
+    .gift-report-container .dc-live { vertical-align: middle; margin-left: 12px; font-weight: normal; color: #555; }
+    .gift-report-container .dc-live b { color: #c41f42; }
+    .gift-report-container .cat-total { background-color: #fffde0; }
+    .gift-report-container .cat-badge { display: inline-block; padding: 3px 8px; border-radius: 999px; border: 1px solid; font-size: 9px; white-space: nowrap; }
+    .gift-report-container .cat-jackpot { color: #b0123a; background: #fdecef; border-color: #f5b5c3; }
+    .gift-report-container .cat-mkmd    { color: #8a4b00; background: #fff4d6; border-color: #f3d58a; }
+    .gift-report-container .cat-splash  { color: #9c1a5c; background: #fdeef6; border-color: #f2b8d6; }
+    .gift-report-container .cat-pgpz    { color: #555;    background: #f1f1f1; border-color: #cfcfcf; }
+    .gift-report-container .scroll-hint { display: block; text-align: center; font-size: 10px; color: #999; padding: 6px 0 0; }
+    .gift-report-container .pager { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 10px; font-size: 12px; font-weight: bold; }
+    .gift-report-container .pager button { padding: 5px 10px; border: 1px solid #e82d53; background: #fff; color: #e82d53; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    .gift-report-container .pager button:disabled { opacity: .35; cursor: default; }
+
+    @media (min-width: 768px) {
+        .gift-report-container table.voice-table { min-width: unset; }
+        .gift-report-container th small { font-size: 11px; }
+        .gift-report-container .cat-badge { font-size: 12px; padding: 4px 12px; }
+        .gift-report-container .scroll-hint { display: none; }
+        .gift-report-container .pager { justify-content: flex-end; font-size: 13px; }
+        .gift-report-container .voice-table .yellow-cell { width: auto; }
+    }
+
+    /* =========================================
+       มือถือ (< 768px): ตาราง 3 คอลัมน์ ของขวัญ | ชิ้น | คูปอง  พอดีจอ ไม่ต้องเลื่อน
+       ========================================= */
+    .gift-report-container .vm-list { display: none; }
+    .gift-report-container table.vm-table { min-width: 0; table-layout: fixed; }
+    .gift-report-container .vm-table th { font-size: 12px; padding: 8px 6px; }
+    .gift-report-container .vm-table td { font-size: 12px; padding: 7px 6px; }
+    .gift-report-container .vm-table .c-num { text-align: right; white-space: nowrap; }
+
+    /* แถวหัววัน (กดเปิดปิดได้ทั้งแถว) */
+    .gift-report-container .vm-day td { padding: 0; background: #fff; }
+    .gift-report-container .vm-day.is-open td { background: #fdeef1; }
+    .gift-report-container .vm-head { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 6px 10px;
+        border: 0; background: transparent; font: inherit; color: #000; text-align: left; cursor: pointer; }
+    .gift-report-container .vm-chev { flex: none; width: 24px; height: 24px; border: 1px solid #e82d53; border-radius: 5px; color: #e82d53;
+        display: flex; align-items: center; justify-content: center; font-size: 13px; transition: transform .2s; background: #fff; }
+    .gift-report-container .vm-day.is-open .vm-chev { transform: rotate(90deg); background: #e82d53; color: #fff; }
+    .gift-report-container .vm-date { font-size: 13px; font-weight: bold; }
+    .gift-report-container .vm-live { margin-left: auto; font-size: 12px; font-weight: normal; color: #555; white-space: nowrap; }
+    .gift-report-container .vm-live b { color: #c41f42; }
+
+    /* แถวหมวด */
+    .gift-report-container .vm-cat td { background: #fffde0; padding: 5px 6px; }
+    .gift-report-container .vm-cat .cat-badge { font-size: 10px; }
+
+    /* แถวของขวัญ */
+    .gift-report-container .vm-gift-cell { display: flex; align-items: center; gap: 6px; text-align: left; }
+    .gift-report-container .vm-gift-cell .gift-box { width: 28px; height: 28px; margin: 0; font-size: 18px; flex: none; }
+    .gift-report-container .vm-gift-cell span { min-width: 0; overflow-wrap: anywhere; }
+
+    /* รวมรายวัน + สรุป */
+    .gift-report-container .vm-daytotal td { background: #ffff99; }
+    .gift-report-container .vm-daytotal td:first-child { text-align: left; color: #a3123a; }
+    .gift-report-container .vm-extra td { background: #ffff99; font-weight: normal; text-align: left; color: #444; padding-top: 4px; }
+    .gift-report-container .vm-extra b { color: #000; margin-right: 12px; }
+    .gift-report-container .vm-table .summary-row td { font-size: 12px; }
+    .gift-report-container .vm-table .summary-row td:first-child { text-align: left; }
+    .gift-report-container .vm-sum-extra td { background: #e82d53; color: #fff; text-align: left; font-weight: normal; line-height: 1.6; border-top-color: #f37c94; }
+    .gift-report-container .vm-sum-extra b { margin-right: 10px; }
+
+    @media (max-width: 767px) {
+        .gift-report-container .table-wrapper,
+        .gift-report-container .scroll-hint { display: none; }
+        .gift-report-container .vm-list { display: block; padding: 0 8px; }
+        .gift-report-container .update-warning { font-size: 11px; }
+        .gift-report-container .pager { padding: 8px 10px 14px; font-size: 13px; }
+        .gift-report-container .pager button { padding: 8px 14px; font-size: 13px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  ภาษา: <button id="b-th" class="on">TH</button><button id="b-en">EN</button>
+  &nbsp; ข้อมูล: <button id="b-full" class="on">มีข้อมูล</button><button id="b-empty">ไม่มีข้อมูล</button>
+</div>
+
+<div class="gift-report-container">
+    <div class="nav-container">
+        <div class="nav-item" id="t-splash"></div>
+        <div class="nav-item active">VOICE</div>
+    </div>
+
+    <div class="update-warning" id="upd"></div>
+
+    <div class="table-wrapper">
+        <table class="voice-table">
+            <thead>
+                <tr>
+                    <th style="width: 14%;" id="h-date"></th>
+                    <th style="width: 13%;" id="h-cat"></th>
+                    <th colspan="2" style="width: 34%;"><span id="h-gift"></span><small id="h-gift-sub"></small></th>
+                    <th style="width: 13%;" id="h-cattotal"></th>
+                    <th id="h-daytotal"></th>
+                </tr>
+            </thead>
+            <tbody id="vbody"></tbody>
+        </table>
+    </div>
+    <div class="vm-list" id="vcards"></div>
+    <span class="scroll-hint" id="hint"></span>
+    <div class="pager" id="pager"></div>
+</div>
+
+<script>
+// ---------- ข้อมูลตัวอย่าง ----------
+var DAYS = [
+  { date: '2026-11-18', sec: 11280, jr: 2080.12, mt: 104.00, cats: [
+    { key: 'jackpot', gifts: [
+      { icon: '🎰', name: 'Jackpot Master', qty: 27437, coupon: 27437, last: '2026-11-18 14:50:10' },
+      { icon: '🎲', name: 'M Jackpot',      qty: 7395,  coupon: 7395,  last: '2026-11-18 14:49:43' },
+      { icon: '🪙', name: 'Jackpot Coin',   qty: 6768,  coupon: 6768,  last: '2026-11-18 14:50:18' } ] },
+    { key: 'mkmd', gifts: [
+      { icon: '🤴', name: 'MKing', qty: 3,   coupon: 3000, last: '2026-11-18 14:18:12' },
+      { icon: '🎀', name: 'MDoll', qty: 100, coupon: 5000, last: '2026-11-18 14:17:14' } ] } ] },
+  { date: '2026-11-15', sec: 3180, jr: 320.50, mt: 16.03, cats: [
+    { key: 'mkmd', gifts: [ { icon: '🎀', name: 'MDoll', qty: 42, coupon: 2100, last: '2026-11-15 22:41:05' } ] },
+    { key: 'pgpz', gifts: [
+      { icon: '💝', name: 'PayGift', qty: 12, coupon: 1200, last: '2026-11-15 21:10:33' },
+      { icon: '✨', name: 'PrettyZ', qty: 5,  coupon: 500,  last: '2026-11-15 20:58:47' } ] } ] },
+  { date: '2026-11-10', sec: 45, jr: 0.30, mt: 0.02, cats: [
+    { key: 'splash', gifts: [
+      { icon: '🌹', name: 'D.Pink Rose',   qty: 2, coupon: 2, last: '2026-11-10 21:05:45' },
+      { icon: '🪻', name: 'D.Purple Rose', qty: 1, coupon: 1, last: '2026-11-10 21:05:13' } ] } ] }
+];
+for (var d = 9; d >= 1; d--) {   // วันตัวอย่างเพิ่ม ให้เห็นการแบ่งหน้า 8 วัน
+  var q = 1000 + d * 137;
+  DAYS.push({ date: '2026-11-0' + d, sec: d * 2400, jr: q * 0.05, mt: q * 0.0025, cats: [
+    { key: 'jackpot', gifts: [ { icon: '🎰', name: 'Jackpot Master', qty: q, coupon: q, last: '2026-11-0' + d + ' 1' + d + ':20:0' + d } ] } ] });
+}
+var SENDERS = 1284;
+
+var CAT = { jackpot: 'JACKPOT', mkmd: 'MKING / MDOLL', splash: 'Splash Gift', pgpz: 'PAYGIFT / PRETTYZ' };
+var T = {
+  th: { tab: 'ของขวัญ ฉ่ำๆ', date: 'วันที่', cat: 'หมวด', gift: 'ของขวัญ', sub: 'ที่ได้รับในห้องไลฟ์เสียง', catTotal: 'รวมหมวด', dayTotal: 'รวมรายวัน',
+        piece: 'ชิ้น', live: 'เวลาไลฟ์', show: 'แสดงรายละเอียด', hide: 'ซ่อนรายละเอียด', hr: 'ชั่วโมง', min: 'นาที', coupons: 'คูปอง', lates: 'ได้รับล่าสุด', upd: '**ข้อมูลอัปเดตทุก 1 ชั่วโมง', last: 'อัปเดตล่าสุด',
+        summary: 'สรุป', senders: 'จำนวน ID ที่ส่งของขวัญ', total: 'คูปองรวม', hint: '← เลื่อนตารางซ้าย-ขวาเพื่อดูทั้งหมด →',
+        prev: '‹ ก่อนหน้า', next: 'ถัดไป ›', page: 'หน้า', empty: 'ยังไม่มีข้อมูลของขวัญในห้องไลฟ์เสียงช่วงนี้' },
+  en: { tab: 'Splash Gift', date: 'Date', cat: 'Category', gift: 'Gift', sub: 'received in voice live room', catTotal: 'Category Total', dayTotal: 'Daily Total',
+        piece: 'Piece', live: 'Live time', hr: 'hr', min: 'min', coupons: 'coupons', lates: 'Receiving lates', upd: '**Data will update every 1 hour.', last: 'Last update',
+        summary: 'Summary', senders: 'Number of gifts received', total: 'total prices', hint: '← scroll the table sideways →',
+        prev: '‹ Prev', next: 'Next ›', page: 'Page', empty: 'No gift records found for this period.' }
+};
+var lang = 'th', empty = false, page = 1, PER_PAGE = 8;
+var openDays = {};  // เปิดวันไหนไว้ (true) จะโชว์แถวทั้งหมดของวันนั้น
+
+function f0(n) { return n.toLocaleString('en-US'); }
+function f2(n) { return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+// วินาที -> "1 ชั่วโมง 3 นาที" / "53 นาที" / "3 ชั่วโมง" / ไม่ถึง 1 นาที = "0 นาที"  (EN: "1 hr 3 min")
+function liveTime(sec, t) {
+  var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
+  if (h === 0) return m + ' ' + t.min;
+  if (m === 0) return h + ' ' + t.hr;
+  return h + ' ' + t.hr + ' ' + m + ' ' + t.min;
+}
+function sum(arr, k) { return arr.reduce(function (a, x) { return a + x[k]; }, 0); }
+function catQty(c) { return sum(c.gifts, 'qty'); }
+function catCoupon(c) { return sum(c.gifts, 'coupon'); }
+function dayQty(d) { return d.cats.reduce(function (a, c) { return a + catQty(c); }, 0); }
+function dayCoupon(d) { return d.cats.reduce(function (a, c) { return a + catCoupon(c); }, 0); }
+
+function render() {
+  var t = T[lang], days = empty ? [] : DAYS;
+  document.getElementById('t-splash').textContent = t.tab;
+  document.getElementById('h-date').textContent = t.date;
+  document.getElementById('h-cat').textContent = t.cat;
+  document.getElementById('h-gift').textContent = t.gift;
+  document.getElementById('h-gift-sub').textContent = t.sub;
+  document.getElementById('h-cattotal').textContent = t.catTotal;
+  document.getElementById('h-daytotal').textContent = t.dayTotal;
+  document.getElementById('upd').innerHTML = t.upd + '<br>' + t.last + ': 2026-11-20 10:00';
+  document.getElementById('hint').textContent = days.length ? t.hint : '';
+
+  var pages = Math.max(1, Math.ceil(days.length / PER_PAGE));
+  if (page > pages) page = pages;
+  var shown = days.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  var h = '';
+
+    shown.forEach(function (d) {
+    var isClosed = !openDays[d.date];
+    // ช่องวันที่ + ปุ่มเปิดปิดมุมซ้ายบน (ใช้ทั้งตอนเปิดและปิด)
+    var dateCell = function (rows) {
+      return '<td rowspan="' + rows + '" class="date-cell">'
+           + '<button type="button" class="day-toggle" data-date="' + d.date + '" aria-expanded="' + !isClosed + '" title="' + (isClosed ? t.show : t.hide) + '">' + (isClosed ? '▸' : '▾') + '</button>'
+           + d.date + '<div class="live-time">' + t.live + '<br><b>' + liveTime(d.sec, t) + '</b></div></td>';
+    };
+    var yellowCell = function (rows) {
+      return '<td rowspan="' + rows + '" class="yellow-cell" style="vertical-align: top; text-align: left;">'
+           + f0(dayQty(d)) + ' ' + t.piece + '<br>' + f0(dayCoupon(d)) + ' ' + t.coupons + '<br>JR: ' + f2(d.jr) + '<br>Mtoken: ' + f2(d.mt) + '</td>';
+    };
+
+        // วันที่ถูกปิด: แถวเตี้ยแถวเดียว บอกแค่วันที่ + เวลาไลฟ์
+    if (isClosed) {
+      h += '<tr class="day-closed"><td colspan="6">'
+         + '<button type="button" class="day-toggle" data-date="' + d.date + '" aria-expanded="false" title="' + t.show + '">▸</button>'
+         + '<span class="dc-date">' + d.date + '</span>'
+         + '<span class="dc-live">' + t.live + ' <b>' + liveTime(d.sec, t) + '</b></span></td></tr>';
+      return;
+    }
+
+    var dayRows = d.cats.reduce(function (a, c) { return a + c.gifts.length; }, 0);
+    d.cats.forEach(function (c, ci) {
+      c.gifts.forEach(function (g, gi) {
+        h += '<tr>';
+        if (ci === 0 && gi === 0) h += dateCell(dayRows);
+        if (gi === 0)
+          h += '<td rowspan="' + c.gifts.length + '" class="cat-cell"><span class="cat-badge cat-' + c.key + '">' + CAT[c.key] + '</span></td>';
+        h += '<td style="width: 19%;"><div class="gift-box">' + g.icon + '</div>' + g.name + '</td>'
+           + '<td style="width: 15%;">' + f0(g.qty) + ' ' + t.piece + '<br>' + f0(g.coupon) + ' ' + t.coupons + '</td>';
+        if (gi === 0)
+          h += '<td rowspan="' + c.gifts.length + '" class="cat-total">' + f0(catQty(c)) + ' ' + t.piece + '<br>' + f0(catCoupon(c)) + ' ' + t.coupons + '</td>';
+        if (ci === 0 && gi === 0) h += yellowCell(dayRows);
+        h += '</tr>';
+      });
+    });
+  });
+
+  if (days.length) {
+    var tq = days.reduce(function (a, d) { return a + dayQty(d); }, 0);
+    var tc = days.reduce(function (a, d) { return a + dayCoupon(d); }, 0);
+    h += '<tr class="summary-row"><td>' + t.summary + '</td><td colspan="4">' + f0(tq) + ' ' + t.piece + '</td>'
+       + '<td><div class="summary-details">' + t.senders + ': ' + f0(SENDERS) + ' ID<br>' + t.total + ': ' + f0(tc) + ' ' + t.coupons
+       + '<br>Mtoken : ' + f2(sum(days, 'mt')) + '<br>JR : ' + f2(sum(days, 'jr')) + '</div></td></tr>';
+  } else {
+    h = '<tr><td colspan="6" style="text-align: center; padding: 40px 10px; color: #777; font-size: 14px;">'
+      + '<div style="font-size: 35px; margin-bottom: 10px; opacity: 0.5;">🎁</div>' + t.empty + '</td></tr>';
+  }
+  document.getElementById('vbody').innerHTML = h;
+
+  // ----- มือถือ: ตาราง 3 คอลัมน์ (ใช้ openDays ตัวเดียวกับตารางจอคอม) -----
+  var m = '<table class="vm-table"><colgroup><col style="width:52%"><col style="width:22%"><col style="width:26%"></colgroup>'
+        + '<thead><tr><th>' + t.gift + '<small>' + t.sub + '</small></th><th>' + t.piece + '</th><th>' + t.coupons + '</th></tr></thead><tbody>';
+  shown.forEach(function (d) {
+    var open = !!openDays[d.date];
+    m += '<tr class="vm-day' + (open ? ' is-open' : '') + '"><td colspan="3">'
+       + '<button type="button" class="vm-head" data-date="' + d.date + '" aria-expanded="' + open + '">'
+       + '<span class="vm-chev" aria-hidden="true">▸</span><span class="vm-date">' + d.date + '</span>'
+       + '<span class="vm-live">' + t.live + ' <b>' + liveTime(d.sec, t) + '</b></span></button></td></tr>';
+    if (!open) return;
+    d.cats.forEach(function (c) {
+      m += '<tr class="vm-cat"><td style="text-align:left"><span class="cat-badge cat-' + c.key + '">' + CAT[c.key] + '</span></td>'
+         + '<td class="c-num">' + f0(catQty(c)) + '</td><td class="c-num">' + f0(catCoupon(c)) + '</td></tr>';
+      c.gifts.forEach(function (g) {
+        m += '<tr><td><div class="vm-gift-cell"><div class="gift-box">' + g.icon + '</div><span>' + g.name + '</span></div></td>'
+           + '<td class="c-num">' + f0(g.qty) + '</td><td class="c-num">' + f0(g.coupon) + '</td></tr>';
+      });
+    });
+    m += '<tr class="vm-daytotal"><td>' + t.dayTotal + '</td><td class="c-num">' + f0(dayQty(d)) + '</td><td class="c-num">' + f0(dayCoupon(d)) + '</td></tr>'
+       + '<tr class="vm-extra"><td colspan="3">JR: <b>' + f2(d.jr) + '</b> Mtoken: <b>' + f2(d.mt) + '</b></td></tr>';
+  });
+  if (days.length) {
+    m += '<tr class="summary-row"><td>' + t.summary + '</td><td class="c-num">' + f0(tq) + '</td><td class="c-num">' + f0(tc) + '</td></tr>'
+       + '<tr class="vm-sum-extra"><td colspan="3">' + t.senders + ': <b>' + f0(SENDERS) + ' ID</b><br>'
+       + 'JR: <b>' + f2(sum(days, 'jr')) + '</b> Mtoken: <b>' + f2(sum(days, 'mt')) + '</b></td></tr>';
+  } else {
+    m += '<tr><td colspan="3" style="text-align: center; padding: 40px 10px; color: #777; font-size: 14px;">'
+       + '<div style="font-size: 35px; margin-bottom: 10px; opacity: 0.5;">🎁</div>' + t.empty + '</td></tr>';
+  }
+  m += '</tbody></table>';
+  document.getElementById('vcards').innerHTML = m;
+
+  document.querySelectorAll('.day-toggle, .vm-head').forEach(function (b) {
+    b.onclick  = function () { var k = b.getAttribute('data-date');
+        openDays[k] = !openDays[k]; render();
+    }
+  })
+
+  var p = document.getElementById('pager');
+  p.innerHTML = pages > 1 ? '<button id="pv"' + (page === 1 ? ' disabled' : '') + '>' + t.prev + '</button><span>' + t.page + ' ' + page + ' / ' + pages
+    + '</span><button id="nx"' + (page === pages ? ' disabled' : '') + '>' + t.next + '</button>' : '';
+  if (pages > 1) {
+    document.getElementById('pv').onclick = function () { page--; render(); };
+    document.getElementById('nx').onclick = function () { page++; render(); };
+  }
+}
+
+function toggle(a, b, fn) { a.onclick = function () { a.classList.add('on'); b.classList.remove('on'); fn(); page = 1; render(); }; }
+toggle(document.getElementById('b-th'), document.getElementById('b-en'), function () { lang = 'th'; });
+toggle(document.getElementById('b-en'), document.getElementById('b-th'), function () { lang = 'en'; });
+toggle(document.getElementById('b-full'), document.getElementById('b-empty'), function () { empty = false; });
+toggle(document.getElementById('b-empty'), document.getElementById('b-full'), function () { empty = true; });
+render();
+</script>
+</body>
+</html>
